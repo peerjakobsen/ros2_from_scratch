@@ -24,7 +24,7 @@ echo -e "${GREEN}Building workspace...${NC}"
 docker compose exec ros2_dev bash -c "
     cd /root/ros2_ws && \
     source /opt/ros/jazzy/setup.bash && \
-    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release 2>&1 | grep -E '(Starting|Finished|Summary|ERROR)' || true
+    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release 2>&1 | grep -E '(Starting|Finished|Summary|ERROR)' || true
 "
 
 # Source the workspace
