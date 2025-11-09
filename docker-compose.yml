@@ -1,0 +1,81 @@
+services:
+  ros2_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/arm64
+    container_name: ros2_jazzy_dev
+    ports:
+      - '5901:5901'  # VNC
+      - '6080:6080'  # noVNC web interface
+    volumes:
+      - ./ros2_ws/src:/root/ros2_ws/src:rw
+      - ./ros2_ws/build:/root/ros2_ws/build:rw
+      - ./ros2_ws/install:/root/ros2_ws/install:rw
+      - ./ros2_ws/log:/root/ros2_ws/log:rw
+    working_dir: /root/ros2_ws
+    environment:
+      - DISPLAY=:1
+      - AUTO_BUILD=1
+      - AUTO_LAUNCH=0
+    stdin_open: true
+    tty: true
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+
+        # Start VNC server
+        Xvnc :1 -geometry 1280x720 -depth 24 -rfbauth /root/.vnc/passwd -localhost no &
+        sleep 3
+
+        export DISPLAY=:1
+
+        # Start dbus and window manager
+        eval $(dbus-launch --sh-syntax)
+        xfce4-session &
+        sleep 2
+
+        # Start noVNC
+        /opt/novnc/utils/novnc_proxy --vnc localhost:5901 --listen 6080 &
+
+        # Source ROS2
+        source /opt/ros/jazzy/setup.bash
+
+        # Optionally build the workspace
+        if [ "$${AUTO_BUILD}" = "1" ] && [ -d /root/ros2_ws/src ]; then
+          echo "Building ROS 2 workspace at /root/ros2_ws"
+          cd /root/ros2_ws
+          colcon build || true
+          source /root/ros2_ws/install/setup.bash || true
+        fi
+
+        # Optionally launch the demo
+        if [ "$${AUTO_LAUNCH}" = "1" ]; then
+          echo "Launching demo_package..."
+          ros2 launch demo_package demo_launch.py &
+        fi
+
+        echo ""
+        echo "=========================================="
+        echo "ROS2 Development Environment Ready!"
+        echo "=========================================="
+        echo "VNC: localhost:5901 (password: password)"
+        echo "Web VNC: http://localhost:6080"
+        echo "Workspace: /root/ros2_ws"
+        echo ""
+        echo "Access GUI in your browser:"
+        echo "  http://localhost:6080"
+        echo ""
+        echo "Or use VNC client:"
+        echo "  vnc://localhost:5901"
+        echo "=========================================="
+        echo "Quick start (in container terminal):"
+        echo "  source /opt/ros/jazzy/setup.bash"
+        echo "  cd /root/ros2_ws && colcon build && source install/setup.bash"
+        echo "  ros2 launch demo_package demo_launch.py"
+        echo ""
+
+        # Keep container running
+        tail -f /dev/null

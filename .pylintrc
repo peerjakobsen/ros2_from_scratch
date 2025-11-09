@@ -1,0 +1,33 @@
+[MASTER]
+ignore-patterns=.*_pb2\.py
+disable=
+    missing-docstring,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-instance-attributes,
+    too-many-locals,
+    unused-argument,
+    redefined-builtin,
+    import-outside-toplevel,
+    import-error,
+
+[IMPORTS]
+ignored-modules=
+    rclpy,
+    rclpy.node,
+    std_msgs,
+    std_msgs.msg,
+    geometry_msgs,
+    geometry_msgs.msg,
+    sensor_msgs,
+    sensor_msgs.msg,
+    nav_msgs,
+    nav_msgs.msg,
+    tf2_geometry_msgs,
+    nav2_msgs,
+    action_msgs,
+    lifecycle_msgs,
+    rcl_interfaces
+
+[FORMAT]
+max-line-length=120

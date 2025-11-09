@@ -1,0 +1,10 @@
+[project]
+name = "ros2-dev"
+version = "0.0.1"
+description = "ROS2 Development Environment for VS Code"
+requires-python = ">=3.10"
+dependencies = [
+    "pylint",
+    "black",
+    "isort",
+]
