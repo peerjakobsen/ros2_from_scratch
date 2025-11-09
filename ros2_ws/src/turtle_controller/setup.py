@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'my_robot_interfaces'],
     zip_safe=True,
     maintainer='Peer Jakobsen',
     maintainer_email='peer.jakobsen@gmail.com',

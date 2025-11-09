@@ -14,7 +14,8 @@ find_package(std_msgs REQUIRED)
 # Generate interfaces
 rosidl_generate_interfaces(${PROJECT_NAME}
   msg/HardwareStatus.msg
-  # srv files
+  srv/ResetCounter.srv
+  srv/SetSpinning.srv
   DEPENDENCIES geometry_msgs std_msgs
 )
 
