@@ -16,6 +16,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/HardwareStatus.msg
   srv/ResetCounter.srv
   srv/SetSpinning.srv
+  action/CountUntil.action
   DEPENDENCIES geometry_msgs std_msgs
 )
 
