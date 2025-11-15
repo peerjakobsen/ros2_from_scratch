@@ -28,8 +28,10 @@ setup(
             "number_publisher = my_py_pkg.number_publisher:main",
             "number_counter = my_py_pkg.number_counter:main",
             "reset_counter_client = my_py_pkg.reset_counter_client:main",
-            "count_until_server = my_py_pkg.count_until_server_minimal:main",
-            "count_until_client = my_py_pkg.count_until_client_minimal:main"
+            "count_until_server_minimal = my_py_pkg.count_until_server_minimal:main",
+            "count_until_client_minimal = my_py_pkg.count_until_client_minimal:main",
+            "count_until_server = my_py_pkg.count_until_server:main",
+            "count_until_client = my_py_pkg.count_until_client:main"
         ],
     },
 )
