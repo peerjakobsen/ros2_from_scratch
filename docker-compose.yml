@@ -18,6 +18,9 @@ services:
       - DISPLAY=:1
       - AUTO_BUILD=1
       - AUTO_LAUNCH=0
+      - ROS_DOMAIN_ID=42
+    networks:
+      - ros2_network
     stdin_open: true
     tty: true
     command:
@@ -79,3 +82,81 @@ services:
 
         # Keep container running
         tail -f /dev/null
+
+  gazebo:
+    build:
+      context: .
+      dockerfile: Dockerfile.gazebo
+    platform: linux/arm64
+    container_name: ros2_gazebo
+    ports:
+      - '5902:5902'  # VNC
+      - '6081:6081'  # noVNC web interface
+    volumes:
+      - ./ros2_ws/src:/root/ros2_ws/src:ro  # Read-only access to packages
+      - ./gazebo_worlds:/root/gazebo_worlds:rw  # Gazebo world files
+      - gazebo_models:/root/.gazebo/models  # Gazebo models cache
+    working_dir: /root/ros2_ws
+    environment:
+      - DISPLAY=:2
+      - ROS_DOMAIN_ID=42
+      - GZ_SIM_RESOURCE_PATH=/root/gazebo_worlds
+    networks:
+      - ros2_network
+    stdin_open: true
+    tty: true
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+
+        # Start VNC server
+        Xvnc :2 -geometry 1280x720 -depth 24 -rfbauth /root/.vnc/passwd -localhost no &
+        sleep 3
+
+        export DISPLAY=:2
+
+        # Start dbus and window manager
+        eval $(dbus-launch --sh-syntax)
+        xfce4-session &
+        sleep 2
+
+        # Start noVNC
+        /opt/novnc/utils/novnc_proxy --vnc localhost:5902 --listen 6081 &
+
+        # Source ROS2
+        source /opt/ros/jazzy/setup.bash
+
+        # Source workspace if it exists
+        if [ -f /root/ros2_ws/install/setup.bash ]; then
+          source /root/ros2_ws/install/setup.bash
+        fi
+
+        echo ""
+        echo "=========================================="
+        echo "Gazebo Simulation Environment Ready!"
+        echo "=========================================="
+        echo "VNC: localhost:5902 (password: password)"
+        echo "Web VNC: http://localhost:6081"
+        echo ""
+        echo "Access Gazebo GUI in your browser:"
+        echo "  http://localhost:6081"
+        echo ""
+        echo "Or use VNC client:"
+        echo "  vnc://localhost:5902"
+        echo "=========================================="
+        echo "Quick start (in container terminal):"
+        echo "  gz sim  # Launch Gazebo"
+        echo "  ros2 launch gazebo_ros gazebo.launch.py"
+        echo ""
+
+        # Keep container running
+        tail -f /dev/null
+
+networks:
+  ros2_network:
+    driver: bridge
+
+volumes:
+  gazebo_models:
