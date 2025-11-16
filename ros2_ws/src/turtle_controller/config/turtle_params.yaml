@@ -1,0 +1,19 @@
+turtle_controller:
+  ros__parameters:
+    # Color for left side (x < 5.5) - Red by default
+    color_1: [255, 0, 0]
+
+    # Color for right side (x >= 5.5) - Blue by default
+    color_2: [0, 100, 255]
+
+    # Linear velocity for left side
+    velocity_left: 4.0
+
+    # Linear velocity for right side
+    velocity_right: 2.0
+
+    # Angular velocity for left side
+    angular_velocity_left: 1.0
+
+    # Angular velocity for right side
+    angular_velocity_right: 2.0
