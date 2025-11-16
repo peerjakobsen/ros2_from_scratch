@@ -1,0 +1,23 @@
+# ROS2 Parameters for number_publisher node
+
+/num_pub1:
+  ros__parameters:
+    # Starting number for the counter
+    initial_number: 3
+
+    # How often to publish the number (in seconds)
+    number_timer_period: 0.5
+
+    # How often to publish hardware status (in seconds)
+    hardware_timer_period: 3.0
+
+/num_pub2:
+  ros__parameters:
+    # Starting number for the counter
+    initial_number: 4
+
+    # How often to publish the number (in seconds)
+    number_timer_period: 1.0
+
+    # How often to publish hardware status (in seconds)
+    hardware_timer_period: 3.0
