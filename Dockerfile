@@ -36,6 +36,7 @@ RUN apt-get update && apt-get upgrade -y && \
     ros-jazzy-navigation2 \
     ros-jazzy-nav2-bringup \
     ros-jazzy-sensor-msgs \
+    ros-jazzy-urdf-tutorial \
     && rm -rf /var/lib/apt/lists/*
 
 # Install build tools and dependencies
