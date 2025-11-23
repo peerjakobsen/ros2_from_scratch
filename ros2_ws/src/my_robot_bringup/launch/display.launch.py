@@ -10,10 +10,9 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('my_robot_bringup')
-    urdf_file = os.path.join(pkg_share, 'urdf', 'my_robot.urdf')
+    xacro_file = os.path.join(pkg_share, 'urdf', 'my_robot.urdf.xacro')
 
-    with open(urdf_file, 'r') as infp:
-        robot_desc = infp.read()
+    robot_desc = Command([FindExecutable(name='xacro'), ' ', xacro_file])
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
