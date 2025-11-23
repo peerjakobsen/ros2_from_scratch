@@ -1,0 +1,15 @@
+<launch>
+    <!-- Number Publisher Node -->
+    <node pkg="my_py_pkg" exec="number_publisher" name="num_pub1" namespace="abc">
+        <param from="$(find-pkg-share my_py_pkg)/config/number_params.yaml"/>
+    </node>
+
+    <node pkg="my_py_pkg" exec="number_publisher" name="num_pub2" namespace="abc">
+        <param name="initial_number" value="5"/>
+        <param name="number_timer_period" value="0.5"/>
+        <param name="hardware_timer_period" value="1.0"/>
+    </node>
+
+    <!-- Number Counter Node -->
+    <node pkg="my_py_pkg" exec="number_counter" name="number_counter" namespace="abc"/>
+</launch>
